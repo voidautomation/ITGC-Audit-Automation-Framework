@@ -1,120 +1,133 @@
-📊 SAP ITGC Audit Automation Tool
-SAP Audit Logo
+# 📊 SAP ITGC Audit Automation Tool
 
-Automated solution to perform IT General Controls (ITGC) audits in SAP using Excel VBA and SAP GUI scripting
+> **Automated solution to perform IT General Controls (ITGC) audits in SAP using Excel VBA and SAP GUI scripting**
 
-📘 Overview
-The SAP ITGC Audit Automation Tool is an Excel VBA-based automation framework integrated with SAP GUI that helps IT Auditors perform GRC monthly audits with:
+---
 
-One-click execution for predefined ITGC controls
-Screenshot capturing
-Report generation in MS Word
-Audit log tracking
-Dynamic GUI for system/control selection
-🎯 Goal: Minimize audit execution time, reduce manual errors, and maintain compliance documentation automatically.
+## 📘 Overview
 
-🚀 Features
-✅ SAP GUI scripting automation (fully integrated with Excel)
-📄 Capture SAP screen steps as visual audit trail
-📁 Save full Word (.docx) report with dynamic naming
-🧾 18+ ITGC controls (e.g., Privilege checks, SAP_ALL access, IXOS access)
-🧠 Dynamic step description mapping per control
-🗃️ Directory creation validation
-🧑‍💼 SSO and credentialed login support
-✅ Integrated logging and error messaging
-🧩 Technologies Used
-Technology	Description
-VBA (Excel Macros)	Backend logic and UI forms
-SAP GUI Scripting	Executes T-codes and automates forms
-Word Automation	Report generation (via Word Object)
-Windows API	Performs PrintScreen, window management, etc.
-🎛️ User Interface Screens
-🔐 Login Form:
-Login UI
+The **SAP ITGC Audit Automation Tool** is an Excel VBA-based automation framework integrated with SAP GUI that helps IT Auditors perform GRC monthly audits with:
 
-Select Control
-Choose SAP System
-From/To Dates
-User ID / Password input
-📋 Dashboard:
-Audit Dashboard
+- ✅ One-click execution for predefined ITGC controls
+- 📸 Screenshot capturing and Word documentation
+- 📁 Audit log tracking
+- 🧠 Dynamic GUI for system/control selection
 
-XML Import
-Log Viewer
-RUN AUDIT button
-Control definitions + matrix by system
-🧪 ITGC Controls Supported
-Code	Definition
-ITGC01	High-level Privilege Access Audit
-ITGC02	Client Opening Audit
-ITGC06	Developer Key/Transport Change Audit
-ITGC07	SAP_ALL and SAP_NEW user privileges
-ITGC08	Table maintenance access
-ITGC10	Alter Security Configuration
-ITGC12	Job Administration Audit (SM37)
-ITGC13	Change configuration RZ10/RZ11
-ITGC17	Usage of T-CODE START_REPORT
-ITGCGUIXT	GUIXT Role Check
-ITGCIXOS	IXOS Admin Role Check
-...	... and more
-Configurations are mapped via Excel sheets and fetched during execution dynamically.
+🎯 **Goal**: Minimize audit execution time, reduce manual errors, and maintain compliance documentation automatically.
 
-🚦 How It Works
-1. Setup
-Enable Excel Macros
-Confirm SAP GUI Scripting is enabled
-SAP GUI > Options > Accessibility & Scripting > Enable scripting
-Ensure valid SAP credentials and Excel inputs
-2. Execution Flow
-vba
+---
 
+## 🚀 Features
+
+- ✅ SAP GUI scripting automation (fully integrated with Excel)
+- 📄 Capture SAP screen steps as a visual audit trail
+- 💾 Save full Word (`.docx`) report with dynamic naming
+- 🧪 18+ ITGC controls (e.g., Privilege checks, SAP_ALL access, IXOS access)
+- 🧠 Dynamic step description mapping per control
+- 🗂️ Directory creation and validation
+- 👨‍💼 SSO and credentialed login support
+- 📋 Integrated logging and error messaging
+
+---
+
+## 🧩 Technologies Used
+
+| Component          | Details                                   |
+|--------------------|--------------------------------------------|
+| VBA (Excel Macros) | Backend logic and UI (UserForms)           |
+| SAP GUI Scripting  | Executes SAP transactions/T-codes          |
+| Word Automation    | Generates visually documented `.docx` file |
+| Windows API        | Manages PrintScreen, window behavior       |
+
+---
+
+## 🖥️ User Interface Screens
+
+### 🔐 Login Form
+
+> Dropdowns for:
+> - Select ITGC Control
+> - Select SAP System  
+> - Date Range Selectors  
+> - User ID / Password  
+> - LOGIN Button triggers automation 🟢
+
+### 📋 Audit Dashboard
+
+> Components:
+> - `XML SETTING` to load SAP system config
+> - `OPEN LOGS` to review execution history
+> - `RUN AUDIT` to execute end-to-end snapshot + Excel export
+> - Status: Control coverage matrix by platform (ERP, GRC, BW, HANA…)
+
+---
+
+## 📌 ITGC Controls Supported
+
+| Ref         | Description                                                              |
+|-------------|--------------------------------------------------------------------------|
+| ITGC01      | High-level Privilege Access Audit                                        |
+| ITGC02      | Client Opening Audit                                                     |
+| ITGC06      | Developer Key / Transport Change Audit                                   |
+| ITGC07      | SAP_ALL and SAP_NEW Access for A & S Users                               |
+| ITGC08      | Table Maintenance Access                                                 |
+| ITGC10      | Alter Security Configuration                                             |
+| ITGC12      | Job Admin Functions Audit (`SM37`)                                       |
+| ITGC13      | Configuration Change Audit (`RZ10`, `RZ11`)                              |
+| ITGC17      | Usage of custom T-CODE: `START_REPORT`                                   |
+| ITGCGUIXT   | GUIXT role assignment validation                                         |
+| ITGCIXOS    | IXOS Admin Role Check (e.g., `JR_R3_IXOS_ADMIN_EBS`)                    |
+
+> Full description sourcing is dynamically mapped from `Sheet4` in Excel.
+
+---
+
+## ⚙️ How It Works
+
+```vb
 ExecuteSAPScripts()
- |- AttachToSAP()
- |- CheckLoginStatus()
- |- ExecuteITGCXX()
- |- Takescreenshot()
- |- Save Report (Word)
-3. Output
-Word file:
-ITGC01 ERP Audit Report.docx
+ ├─ AttachToSAP()
+ ├─ CheckLoginStatus()
+ ├─ ExecuteITGCXX()    ' Based on dropdown
+ ├─ Takescreenshot()   ' Steps logged visually
+ └─ EnsureFolderPathExistsAndSave()
 
-Screenshot logs and user remarks embedded per step
-
-📁 File Structure
-Bash
+## 📂 Folder Structure
+plaintext
 
 ├── /Forms
 │   └── UserLoginForm.frm
 ├── /Modules
 │   ├── ExecuteSAPScripts.bas
-│   ├── UtilityFunctions.bas
-├── Sheet3 [Inputs: Control ID, Dates, Paths]
-├── Sheet4 [Descriptions, Checkpoints]
+│   └── UtilityFunctions.bas
+├── Sheet3 [Input Controls: Control ID, Dates, User Info]
+├── Sheet4 [Descriptions, Checkpoints per Control]
 └── /Reports
-    └── [Auto-saved Word documents]
-🛠️ Admin/Developer Notes
-Setup Script Logging:
-Uses LogMessage subroutine to save details locally
-UploadLogs.UploadFileToFirebase (optional Firebase support)
-Add New Control:
-Write new Subroutine:
-vba
+    └── [Generated .docx audit files]
+## 🔧 Requirements
+✅ Excel (Macros enabled)
+✅ SAP Logon Pad (saplgpad.exe)
+✅ SAP GUI Scripting (enabled on server + GUI)
+✅ Word (for report generation)
+🔐 Valid SAP credentials (UserID/Password or SSO)
+✅ Instructions to Run
+Clone or download the .xlsm macro workbook.
+Open in Excel (Run as Administrator).
+Click RUN AUDIT → UserLoginForm opens.
+Fill in:
+Control ID
+SAP System
+Date Range
+User ID / Password
+Click LOGIN and relax!
+🩺 Troubleshooting
+Issue	Resolution
+SAP GUI not found	Check if SAP GUI is installed correctly and scripting is enabled
+Login keeps failing	Credentials incorrect or system combo mismatched
+Screenshots not captured	Clipboard access denied, try local environment
+Folder save fails	Nonexistent path or permission issue
+No steps/document saved	Ensure Word is installed, and SAP form loads properly
 
-Sub ExecuteITGCXX()
-  ' Add SAP logic and screenshots
-End Sub
-Update ExecuteSAPScripts case selector
-Add descriptions to Sheet4
-🧯 Troubleshooting
-Issue	Fix
-SAP GUI not found	Ensure saplgpad.exe is installed and scripting enabled
-No screenshots captured	Check PrintScreen key availability & local clipboard access
-Login stuck	Validate credentials & SAP landscape configuration
-Folder save error	Use full path or check folder permissions
-🧑‍💻 Developer
-👨‍💻 Developer: Abhinav Kumar
-📧 Email: Kumar.abhinav227@gmail.com
-
-
-📄 License
-This project is for internal business use only. Redistribution or reuse for commercial purposes requires explicit authorization.
+## 🧑‍💻 Developer
+👨 Abhinav Kumar
+Developer · SAP Automation Specialist · Excel VBA Enthusiast
